@@ -1,0 +1,1 @@
+DROP DATABASE mpate_daktari;
