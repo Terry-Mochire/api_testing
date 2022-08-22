@@ -1,9 +1,6 @@
 package dao;
 
-import models.Hospital;
-import models.Location;
-import models.Service;
-import models.Specialty;
+import models.*;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -30,6 +27,21 @@ public class Sql2oHospitalDao implements HospitalDao {
             System.out.println(e + "Unable to add new hospital to the database.");
         }
 
+    }
+
+
+    @Override
+    public void addHospitalToPayment(Hospital hospital, Payment payment) {
+        try (Connection con = sql2o.open()) {
+            String SQL_INSERT_HOSPITAL_TO_PAYMENT = "INSERT INTO hospitals.payment (hospital_id, payment_id) VALUES (:hospital_id, :payment_id);";
+            con.createQuery(SQL_INSERT_HOSPITAL_TO_PAYMENT)
+                    .addParameter("hospital_id", hospital.getId())
+                    .addParameter("payment_id", payment.getId())
+                    .executeUpdate();
+            hospital.setPayment_id(payment.getId());
+        } catch (Sql2oException e) {
+            System.out.println(e + "Unable to add hospital to payment");
+        }
     }
 
     @Override
@@ -109,6 +121,54 @@ public class Sql2oHospitalDao implements HospitalDao {
             System.out.println( e + "Unable to get hospital by working hours from the database.");
             return null;
         }
+    }
+
+    @Override
+    public List<Hospital> findHospitalsByPaymentName(String payment_name) {
+        Payment payment = new Sql2oPaymentDao(sql2o).findByName(payment_name);
+        int payment_id = payment.getId(); // get the payment_id from the payment object
+        try (Connection con = sql2o.open()){
+            String SQL_GET_HOSPITAL_BY_PAYMENT_ID = "SELECT * FROM hospitals WHERE id = (SELECT hospital_id FROM hospitals.payment WHERE payment_id = :payment_id);";
+            return con.createQuery(SQL_GET_HOSPITAL_BY_PAYMENT_ID)
+                    .addParameter("payment_id", payment_id)
+                    .executeAndFetch(Hospital.class);
+        } catch (Exception e) {
+            System.out.println(e + "Unable to get hospital by payment id from the database.");
+            return null;
+        }
+
+
+    }
+
+    @Override
+    public List<Hospital> findAllHospitalsWithServiceName(String serviceName) {
+        Service service = new Sql2oServiceDao(sql2o).findByName(serviceName);
+        int service_id = service.getId(); // get the service_id from the service object
+
+        try(Connection con = sql2o.open()) {
+            String SQL_GET_ALL_HOSPITALS_WITH_SERVICE_NAME = "SELECT * FROM hospitals WHERE id IN (SELECT hospital_id FROM hospitals.services WHERE services_id = :service_id);";
+            return con.createQuery(SQL_GET_ALL_HOSPITALS_WITH_SERVICE_NAME)
+                    .addParameter("service_id", service_id)
+                    .executeAndFetch(Hospital.class);
+        } catch (Exception e) {
+            System.out.println(e + "Unable to get all hospitals with service name from the database.");
+            return null;
+        }
+    }
+
+    @Override
+    public List<Hospital> findAllHospitalsWithSpecialtyName(String specialtyName) {
+       Specialty specialty = new Sql2oSpecialtyDao(sql2o).findByName(specialtyName);
+         int specialty_id = specialty.getId(); // get the specialty_id from the specialty object
+          try(Connection con = sql2o.open()) {
+                String SQL_GET_ALL_HOSPITALS_WITH_SPECIALTY = "SELECT * FROM hospitals WHERE id IN (SELECT hospital_id FROM hospitals.specialty WHERE specialty_id = :specialty_id);";
+                return con.createQuery(SQL_GET_ALL_HOSPITALS_WITH_SPECIALTY)
+                      .addParameter("specialty_id", specialty_id)
+                      .executeAndFetch(Hospital.class);
+          } catch (Exception e) {
+                System.out.println(e + "Unable to get all hospitals with specialty from the database.");
+                return null;
+          }
     }
 
     @Override
