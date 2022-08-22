@@ -16,6 +16,7 @@ public interface ServiceDao {
     Service findById(int service_id);
     Service findByName (String serviceName);
     List<Service> findAllServicesInHospital(int hospital_id);
+    List<Hospital> findAllHospitalsWithService(int service_id);
 
     //Update
     void update(int id, String name);
