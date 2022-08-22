@@ -44,6 +44,20 @@ public class Sql2oSpecialtyDao implements SpecialtyDao {
     }
 
     @Override
+    public void addSpecialtyToDoctor(Specialty specialty, Doctor doctor) {
+        try (Connection con = sql2o.open()) {
+            String SQL_INSERT_SPECIALTY_TO_DOCTOR = "INSERT INTO doctors.specialties (doctor_id, specialty_id) (:specialty_id, :doctor_id);";
+            con.createQuery(SQL_INSERT_SPECIALTY_TO_DOCTOR)
+                    .addParameter("doctor_id", doctor.getId())
+                    .addParameter("specialty_id", specialty.getId())
+                    .executeUpdate();
+            specialty.setDoctor_id(doctor.getId());
+        } catch (Sql2oException e) {
+            System.out.println(e + "Unable to add specialty to Doctor");
+        }
+    }
+
+    @Override
     public void addSpecialtyToLocation(Specialty specialty, Location location) {
         try (Connection con = sql2o.open()) {
             String SQL_INSERT_SPECIALTY_TO_LOCATION = "INSERT INTO locations.specialty (specialty_id, location_id) VALUES (:specialty_id, :location_id);";

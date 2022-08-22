@@ -10,6 +10,7 @@ public interface SpecialtyDao {
     void add(Specialty specialty);
     void addSpecialtyToHospital(Specialty specialty, Hospital hospital);
 
+    void addSpecialtyToDoctor(Specialty specialty, Doctor doctor);
     void addSpecialtyToLocation(Specialty specialty, Location location);
 
 
