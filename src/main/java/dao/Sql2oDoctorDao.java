@@ -134,9 +134,21 @@ public class Sql2oDoctorDao implements DoctorDao{
     }
 
     @Override
-    public List<Doctor> getAllDoctorsByPayment(int payment_id) {
+    public List<Doctor> getAllDoctorsByPaymentId(int payment_id) {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT FROM doctors WHERE id = (SELECT doctor_id FROM doctors.payments WHERE payment_id = :payment_id);")
+                    .addParameter("payment_id", payment_id)
+                    .executeAndFetch(Doctor.class);
+        }
+    }
+
+    @Override
+    public List<Doctor> findAllDoctorsByPaymentName(String paymentName) {
+        Payment payment = new Sql2oPaymentDao(sql2o).findByName(paymentName);
+        int payment_id = payment.getId();
+
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM doctors WHERE id = (SELECT doctor_id FROM doctors.payments WHERE payment_id = :payment_id);")
                     .addParameter("payment_id", payment_id)
                     .executeAndFetch(Doctor.class);
         }

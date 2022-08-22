@@ -26,7 +26,9 @@ public interface DoctorDao {
 
     List<Doctor> getAllDoctorsBySpecialty(int specialty_id);
 
-    List<Doctor> getAllDoctorsByPayment(int payment_id);
+    List<Doctor> getAllDoctorsByPaymentId(int payment_id);
+
+    List<Doctor> findAllDoctorsByPaymentName(String paymentName);
 
     //Update
 
