@@ -2,6 +2,7 @@ package models;
 
 public class Service {
 
+
     private int id;
     private String name;
 
@@ -25,4 +26,5 @@ public class Service {
     public void setName(String name) {
         this.name = name;
     }
+
 }
