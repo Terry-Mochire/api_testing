@@ -6,6 +6,8 @@ public class Specialty {
     private int id;
     private String name;
 
+    private int hospital_id;
+
     public Specialty(int id, String name) {
         this.id = id;
         this.name = name;
@@ -27,4 +29,11 @@ public class Specialty {
         this.name = name;
     }
 
+    public int getHospital_id() {
+        return hospital_id;
+    }
+
+    public void setHospital_id(int hospital_id) {
+        this.hospital_id = hospital_id;
+    }
 }

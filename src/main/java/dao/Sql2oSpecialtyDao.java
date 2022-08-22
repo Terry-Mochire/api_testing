@@ -31,13 +31,14 @@ public class Sql2oSpecialtyDao implements SpecialtyDao {
     @Override
     public void addSpecialtyToHospital(Specialty specialty, Hospital hospital) {
         try (Connection con = sql2o.open()) {
-            String SQL_INSERT_SPECIALTY_HOSPITAL = "INSERT INTO hospitals.specialty (hospital_id, specialty_id,) VALUES (:hospital_id, :specialty_id);";
-            con.createQuery(SQL_INSERT_SPECIALTY_HOSPITAL)
-                    .addParameter("hospital_id", hospital.getId())
+            String SQL_INSERT_SPECIALTY_TO_HOSPITAL = "INSERT INTO hospitals.specialties (specialty_id, hospital_id) VALUES (:specialty_id, :hospital_id);";
+            con.createQuery(SQL_INSERT_SPECIALTY_TO_HOSPITAL)
                     .addParameter("specialty_id", specialty.getId())
+                    .addParameter("hospital_id", hospital.getId())
                     .executeUpdate();
+            specialty.setHospital_id(hospital.getId());
         } catch (Sql2oException e) {
-            System.out.println(e + "Unable to add specialty to hospital.");
+            System.out.println(e + "Unable to add specialty to Hospital");
         }
     }
 
