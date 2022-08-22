@@ -1,6 +1,7 @@
 package dao;
 
 import models.Hospital;
+import models.Location;
 import models.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -33,14 +34,28 @@ public class Sql2oServiceDao implements ServiceDao {
     @Override
     public void addServiceToHospital(Service service, Hospital hospital) {
         try (Connection con = sql2o.open()){
-            String SQL_INSERT_SERVICE_TO_HOSPITAL = "INSERT INTO hospitals.services (service_id, hospital_id) VALUES (:service_id, :hospital_id);";
+            String SQL_INSERT_SERVICE_TO_HOSPITAL = "INSERT INTO hospitals.services ( hospital_id, services_id) VALUES (:hospital_id, :service_id);";
             con.createQuery(SQL_INSERT_SERVICE_TO_HOSPITAL)
-                    .addParameter("service_id", service.getId())
                     .addParameter("hospital_id", hospital.getId())
+                    .addParameter("service_id", service.getId())
                     .executeUpdate();
             service.setHospital_id(hospital.getId());
         } catch (Sql2oException e){
             System.out.println(e + "Unable to add service to Hospital");
+        }
+    }
+
+    @Override
+    public void addServiceToLocation(Service service, Location location) {
+        try (Connection con = sql2o.open()){
+            String SQL_INSERT_SERVICE_TO_LOCATION = "INSERT INTO locations.services (services_id, location_id) VALUES (:service_id, :location_id);";
+            con.createQuery(SQL_INSERT_SERVICE_TO_LOCATION)
+                    .addParameter("service_id", service.getId())
+                    .addParameter("location_id", location.getId())
+                    .executeUpdate();
+            service.setLocation_id(location.getId());
+        } catch (Sql2oException e){
+            System.out.println(e + "Unable to add service to Location");
         }
     }
 

@@ -8,6 +8,9 @@ public class Service {
 
     private int hospital_id;
 
+    private int location_id;
+
+
     public Service(int id, String name) {
         this.id = id;
         this.name = name;
@@ -35,5 +38,13 @@ public class Service {
 
     public void setHospital_id(int hospital_id) {
         this.hospital_id = hospital_id;
+    }
+
+    public int getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(int location_id) {
+        this.location_id = location_id;
     }
 }

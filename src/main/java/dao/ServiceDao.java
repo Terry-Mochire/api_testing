@@ -1,6 +1,7 @@
 package dao;
 
 import models.Hospital;
+import models.Location;
 import models.Service;
 
 import java.util.List;
@@ -9,6 +10,7 @@ public interface ServiceDao {
     //Create
     void add(Service service);
     void addServiceToHospital(Service service, Hospital hospital);
+    void addServiceToLocation(Service service, Location location);
 
 
     //Read
