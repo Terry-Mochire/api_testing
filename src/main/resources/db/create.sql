@@ -12,17 +12,17 @@ CREATE SCHEMA "hospitals";
 CREATE SCHEMA "doctors";
 
 CREATE TABLE IF NOT EXISTS "location" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "name" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "specialty" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "name" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "doctors" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "name" varchar,
   "locationID" int,
   "specialtyID" int,
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "doctors" (
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "name" varchar,
   "operatingHours" varchar,
   "locationID" int,
@@ -44,53 +44,53 @@ CREATE TABLE IF NOT EXISTS "hospitals" (
 );
 
 CREATE TABLE IF NOT EXISTS"services" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "name" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "payment" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "name" varchar
 );
 
 CREATE TABLE  IF NOT EXISTS "location"."specialty" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "specialtyId" int,
   "locationID" int
 );
 
 CREATE TABLE IF NOT EXISTS "location"."services" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "servicesId" int,
   "locationID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."payment" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "hospitalID" int,
   "paymentID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."services" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "hospitalID" int,
   "servicesID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."specialty" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "hospitalID" int,
   "specialtyID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."doctors" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "hospitalID" int,
   "doctorID" int
 );
 
 CREATE TABLE IF NOT EXISTS "doctors"."payment" (
-  "id" int,
+  "id" PRIMARY KEY auto_increment,
   "doctorID" int,
   "paymentID" int
 );
