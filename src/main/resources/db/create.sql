@@ -12,17 +12,17 @@ CREATE SCHEMA "hospitals";
 CREATE SCHEMA "doctors";
 
 CREATE TABLE IF NOT EXISTS "location" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "name" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "specialty" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "name" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "doctors" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "name" varchar,
   "locationID" int,
   "specialtyID" int,
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "doctors" (
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "name" varchar,
   "operatingHours" varchar,
   "locationID" int,
@@ -44,53 +44,53 @@ CREATE TABLE IF NOT EXISTS "hospitals" (
 );
 
 CREATE TABLE IF NOT EXISTS"services" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "name" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "payment" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "name" varchar
 );
 
 CREATE TABLE  IF NOT EXISTS "location"."specialty" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "specialtyId" int,
   "locationID" int
 );
 
 CREATE TABLE IF NOT EXISTS "location"."services" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "servicesId" int,
   "locationID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."payment" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "hospitalID" int,
   "paymentID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."services" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "hospitalID" int,
   "servicesID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."specialty" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "hospitalID" int,
   "specialtyID" int
 );
 
 CREATE TABLE IF NOT EXISTS "hospitals"."doctors" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "hospitalID" int,
   "doctorID" int
 );
 
 CREATE TABLE IF NOT EXISTS "doctors"."payment" (
-  "id" PRIMARY KEY auto_increment,
+  "id" serial PRIMARY KEY,
   "doctorID" int,
   "paymentID" int
 );
