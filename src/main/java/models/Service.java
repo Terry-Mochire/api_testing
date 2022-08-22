@@ -8,10 +8,9 @@ public class Service {
 
     private int hospital_id;
 
-    public Service(int id, String name, int hospital_id) {
+    public Service(int id, String name) {
         this.id = id;
         this.name = name;
-        this.hospital_id = hospital_id;
     }
 
     public int getId() {
