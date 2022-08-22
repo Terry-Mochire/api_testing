@@ -85,7 +85,7 @@ public class Sql2oServiceDao implements ServiceDao {
     @Override
     public List<Service> findAllServicesInHospital(int hospital_id) {
         try (Connection con = sql2o.open()){
-            String SQL_GET_ALL_SERVICES_IN_HOSPITAL = "SELECT * FROM hospitals.services WHERE hospital_id = :hospital_id";
+            String SQL_GET_ALL_SERVICES_IN_HOSPITAL = "SELECT * FROM services WHERE id = ( SELECT services_id FROM hospitals.services WHERE id = :hospital_id)";
             return con.createQuery(SQL_GET_ALL_SERVICES_IN_HOSPITAL)
                     .addParameter("hospital_id", hospital_id)
                     .executeAndFetch(Service.class);
@@ -98,7 +98,7 @@ public class Sql2oServiceDao implements ServiceDao {
     @Override
     public List<Hospital> findAllHospitalsWithService(int service_id) {
         try (Connection con = sql2o.open()){
-            String SQL_GET_ALL_HOSPITALS_WITH_SERVICE = "SELECT * FROM hospitals.services WHERE service_id = :service_id";
+            String SQL_GET_ALL_HOSPITALS_WITH_SERVICE = "SELECT * FROM hospitals INNER JOIN hospitals.services ON hospitals.id = hospitals.services.hospital_id WHERE services.services_id = :service_id";
             return con.createQuery(SQL_GET_ALL_HOSPITALS_WITH_SERVICE)
                     .addParameter("service_id", service_id)
                     .executeAndFetch(Hospital.class);
