@@ -109,7 +109,7 @@ public class Sql2oDoctorDao implements DoctorDao{
     @Override
     public List<Doctor> getAllDoctorsByHospital(int hospital_id) {
         try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM hospitals.doctors WHERE hospital_id = :hospital_id")
+            return con.createQuery("SELECT * FROM doctors WHERE id = (SELECT doctor_id FROM hospitals.doctors WHERE hospital_id = :hospital_id);")
                     .addParameter("hospital_id", hospital_id)
                     .executeAndFetch(Doctor.class);
         }
@@ -127,7 +127,7 @@ public class Sql2oDoctorDao implements DoctorDao{
     @Override
     public List<Doctor> getAllDoctorsBySpecialty(int specialty_id) {
         try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM doctors.specialties WHERE specialty_id = :specialty_id")
+            return con.createQuery("SELECT * FROM doctors WHERE specialty_id = :specialty_id")
                     .addParameter("specialty_id", specialty_id)
                     .executeAndFetch(Doctor.class);
         }
@@ -136,7 +136,7 @@ public class Sql2oDoctorDao implements DoctorDao{
     @Override
     public List<Doctor> getAllDoctorsByPayment(int payment_id) {
         try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM doctors.payments WHERE payment_id = :payment_id")
+            return con.createQuery("SELECT FROM doctors WHERE id = (SELECT doctor_id FROM doctors.payments WHERE payment_id = :payment_id);")
                     .addParameter("payment_id", payment_id)
                     .executeAndFetch(Doctor.class);
         }
