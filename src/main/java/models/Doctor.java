@@ -11,8 +11,10 @@ public class Doctor {
     private double rating;
     private int location_id;
     private int specialty_id;
+    private int hospital_id;
+    private int payment_id;
 
-    public Doctor(int id, String name, String qualification, String email, String phoneNumber, int consultationFee, double rating, int location_id, int specialty_id) {
+    public Doctor(int id, String name, String qualification, String email, String phoneNumber, int consultationFee, double rating, int location_id, int specialty_id, int hospital_id, int payment_id) {
         this.id = id;
         this.name = name;
         this.qualification = qualification;
@@ -22,6 +24,8 @@ public class Doctor {
         this.rating = rating;
         this.location_id = location_id;
         this.specialty_id = specialty_id;
+        this.hospital_id = hospital_id;
+        this.payment_id = payment_id;
     }
 
     public int getId() {
@@ -94,5 +98,21 @@ public class Doctor {
 
     public void setSpecialty_id(int specialty_id) {
         this.specialty_id = specialty_id;
+    }
+
+    public int getHospital_id() {
+        return hospital_id;
+    }
+
+    public void setHospitalId(int hospital_id) {
+        this.hospital_id = hospital_id;
+    }
+
+    public int getPayment_id() {
+        return payment_id;
+    }
+
+    public void setPayment_id(int payment_id) {
+        this.payment_id = payment_id;
     }
 }

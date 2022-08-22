@@ -75,4 +75,5 @@ public class Hospital {
     public void setLocation_id(int location_id) {
         this.location_id = location_id;
     }
+
 }
