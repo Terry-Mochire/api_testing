@@ -14,7 +14,7 @@ public interface HospitalDao {
 
     List<Hospital> getAll();
     Hospital findById(int hospital_id);
-    Hospital findHospitalsByName(String hospital_name);
+    Hospital findHospitalsByHospitalName(String hospital_name);
     List<Hospital> findHospitalsByLocationId(int location_id);
     List<Hospital> findHospitalsByLocationName(String location_name);
     List<Hospital> findHospitalByWorkingHours(String working_hours);
