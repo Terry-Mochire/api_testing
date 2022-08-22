@@ -19,18 +19,18 @@ public class Sql2oDoctorDao implements DoctorDao{
     public void add(Doctor doctor) {
         String sql = "INSERT INTO doctors (doc_name, location_id, specialty_id, qualification, consultation_fee, email, phone_number, rating) VALUES (:doc_name, :location_id, :specialty-id, :qualification, :consultation_fee, :email, :phone_number, :rating);";
         try(Connection con = sql2o.open()){
-//            int id = (int) con.createQuery(sql, true)
-//                    .addParameter("doc_name", doctor.getDoc_name())
-//                    .addParameter("location_id", doctor.getLocation_id())
-//                    .addParameter("specialty_id", doctor.getSpecialty_id())
-//                    .addParameter("qualification", doctor.getQualification())
-//                    .addParameter("consultation_fee", doctor.getConsultation_fee())
-//                    .addParameter("email", doctor.getEmail())
-//                    .addParameter("phone_number", doctor.getPhone_number())
-//                    .addParameter("rating", doctor.getRating())
-//                    .executeUpdate()
-//                    .getKey();
-//            doctor.setId(id);
+            int id = (int) con.createQuery(sql, true)
+                    .addParameter("doc_name", doctor.getName())
+                    .addParameter("location_id", doctor.getLocation_id())
+                    .addParameter("specialty_id", doctor.getSpecialty_id())
+                    .addParameter("qualification", doctor.getQualification())
+                    .addParameter("consultation_fee", doctor.getConsultationFee())
+                    .addParameter("email", doctor.getEmail())
+                    .addParameter("phone_number", doctor.getPhoneNumber())
+                    .addParameter("rating", doctor.getRating())
+                    .executeUpdate()
+                    .getKey();
+            doctor.setId(id);
         } catch (Sql2oException ex){
             System.out.println(ex + "Error Occurs");
         }
@@ -40,11 +40,11 @@ public class Sql2oDoctorDao implements DoctorDao{
     public void addDoctorToHospital(Doctor doctor, Hospital hospital) {
         String sql = "INSERT INTO hospitals.doctors (doctor_id, hospital_id) VALUES (:doctor_id, :hospital_id);";
         try (Connection con = sql2o.open()) {
-//            con.createQuery(sql)
-//                    .addParameter("doctor_id", doctor.getId())
-//                    .addParameter("hospital_id", hospital.getId())
-//                    .executeUpdate();
-//            doctor.setHospitalId(hospital.getId());
+                    con.createQuery(sql)
+                            .addParameter("doctor_id", doctor.getId())
+                            .addParameter("hospital_id", hospital.getId())
+                            .executeUpdate();
+                    doctor.setHospitalId(hospital.getId());
         } catch (Sql2oException ex) {
             System.out.println("Error adding doctor to hospital" + ex);
         }
@@ -56,11 +56,11 @@ public class Sql2oDoctorDao implements DoctorDao{
     public void addDoctorToSpecialty(Doctor doctor, Specialty specialty) {
         String sql = "INSERT INTO doctors.specialties (doctor_id, specialty_id) VALUES (:doctor_id, :specialty_id);";
         try (Connection con = sql2o.open()) {
-//            con.createQuery(sql)
-//                    .addParameter("doctor_id", doctor.getId())
-//                    .addParameter("specialty_id", specialty.getId())
-//                    .executeUpdate();
-//            doctor.setSpecialtyId(specialty.getId());
+            con.createQuery(sql)
+                    .addParameter("doctor_id", doctor.getId())
+                    .addParameter("specialty_id", specialty.getId())
+                    .executeUpdate();
+            doctor.setSpecialty_id(specialty.getId());
         } catch (Sql2oException ex) {
             System.out.println("Error adding doctor to specialty" + ex);
         }
@@ -70,11 +70,11 @@ public class Sql2oDoctorDao implements DoctorDao{
     public void addDoctorToPayments(Doctor doctor, Payment payment) {
         String sql = "INSERT INTO doctors.payments (doctor_id, payment_id) VALUES (:doctor_id, :payment_id);";
         try (Connection con = sql2o.open()) {
-//            con.createQuery(sql)
-//                    .addParameter("doctor_id", doctor.getId())
-//                    .addParameter("payment_id", payment.getId())
-//                    .executeUpdate();
-//            doctor.setPaymentId(payment.getId());
+            con.createQuery(sql)
+                    .addParameter("doctor_id", doctor.getId())
+                    .addParameter("payment_id", payment.getId())
+                    .executeUpdate();
+            doctor.setPayment_id(payment.getId());
         } catch (Sql2oException ex) {
             System.out.println("Error adding doctor to payment" + ex);
         }
