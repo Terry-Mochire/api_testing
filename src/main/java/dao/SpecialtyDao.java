@@ -1,9 +1,6 @@
 package dao;
 
-import models.Doctor;
-import models.Hospital;
-import models.Payment;
-import models.Specialty;
+import models.*;
 
 import java.util.List;
 
@@ -12,6 +9,8 @@ public interface SpecialtyDao {
     //Create
     void add(Specialty specialty);
     void addSpecialtyToHospital(Specialty specialty, Hospital hospital);
+
+    void addSpecialtyToLocation(Specialty specialty, Location location);
 
 
     //Read

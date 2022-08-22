@@ -2,6 +2,7 @@ package dao;
 
 import models.Doctor;
 import models.Hospital;
+import models.Location;
 import models.Specialty;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -39,6 +40,20 @@ public class Sql2oSpecialtyDao implements SpecialtyDao {
             specialty.setHospital_id(hospital.getId());
         } catch (Sql2oException e) {
             System.out.println(e + "Unable to add specialty to Hospital");
+        }
+    }
+
+    @Override
+    public void addSpecialtyToLocation(Specialty specialty, Location location) {
+        try (Connection con = sql2o.open()) {
+            String SQL_INSERT_SPECIALTY_TO_LOCATION = "INSERT INTO locations.specialty (specialty_id, location_id) VALUES (:specialty_id, :location_id);";
+            con.createQuery(SQL_INSERT_SPECIALTY_TO_LOCATION)
+                    .addParameter("specialty_id", specialty.getId())
+                    .addParameter("location_id", location.getId())
+                    .executeUpdate();
+            specialty.setLocation_id(location.getId());
+        } catch (Sql2oException e) {
+            System.out.println(e + "Unable to add specialty to Location");
         }
     }
 
