@@ -124,7 +124,7 @@ ALTER TABLE "doctors"."payments" ADD FOREIGN KEY ("payment_id") REFERENCES "paym
 
 ALTER TABLE "doctors"."payments" ADD FOREIGN KEY ("doctor_id") REFERENCES "doctors" ("id");
 
-ALTER TABLE "doctors"."specialties" ADD FOREIGN KEY ("specialty_id") REFERENCES "specialies" ("id");
+ALTER TABLE "doctors"."specialties" ADD FOREIGN KEY ("specialty_id") REFERENCES "specialties" ("id");
 
 ALTER TABLE "doctors"."specialties" ADD FOREIGN KEY ("doctor_id") REFERENCES "doctors" ("id");
 
@@ -134,6 +134,6 @@ ALTER TABLE "hospitals"."payments" ADD FOREIGN KEY ("payment_id") REFERENCES "pa
 
 ALTER TABLE "hospitals"."specialties" ADD FOREIGN KEY ("hospital_id") REFERENCES "hospitals" ("id");
 
-ALTER TABLE "hospitals"."specialties" ADD FOREIGN KEY ("specialty_iD") REFERENCES "specialties" ("id");
+ALTER TABLE "hospitals"."specialties" ADD FOREIGN KEY ("specialty_id") REFERENCES "specialties" ("id");
 
 ALTER TABLE "services" ADD FOREIGN KEY ("id") REFERENCES "locations"."services" ("services_id");
