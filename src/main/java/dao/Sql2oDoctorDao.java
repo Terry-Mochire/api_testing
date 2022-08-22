@@ -17,7 +17,7 @@ public class Sql2oDoctorDao implements DoctorDao{
 
     @Override
     public void add(Doctor doctor) {
-        String sql = "INSERT INTO doctors (doc_name, location_id, specialty_id, qualification, consultation_fee, email, phone_number, rating) VALUES (:doc_name, :location_id, :specialty-id, :qualification, :consultation_fee, :email, :phone_number, :rating);";
+        String sql = "INSERT INTO doctors (doc_name, location_id, specialty_id, qualification, consultation_fee, email, phone_number, rating) VALUES (:doc_name, :location_id, :specialty_id, :qualification, :consultation_fee, :email, :phone_number, :rating);";
         try(Connection con = sql2o.open()){
             int id = (int) con.createQuery(sql, true)
                     .addParameter("doc_name", doctor.getName())
