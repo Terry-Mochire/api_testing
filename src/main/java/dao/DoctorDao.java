@@ -36,7 +36,7 @@ public interface DoctorDao {
 
     //Delete
 
-    void deleteById(int doctorId);
+    Object deleteById(int doctorId);
 
     void clearAll();
 }

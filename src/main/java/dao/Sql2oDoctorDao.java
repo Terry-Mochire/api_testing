@@ -176,7 +176,7 @@ public class Sql2oDoctorDao implements DoctorDao{
 
 
     @Override
-    public void deleteById(int doctorId) {
+    public Object deleteById(int doctorId) {
         String sql = "DELETE FROM doctors WHERE id = :id;";
         String deleteJoin = "DELETE FROM hospitals.doctors WHERE doctor_id = :id;";
         try (Connection con = sql2o.open()) {
@@ -190,6 +190,7 @@ public class Sql2oDoctorDao implements DoctorDao{
             System.out.println("Error deleting doctor" + ex);
         }
 
+        return "Doctor Deleted";
     }
 
     @Override
