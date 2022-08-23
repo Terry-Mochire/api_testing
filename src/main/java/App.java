@@ -326,10 +326,10 @@ public class App {
 
         //d). get payment by hospitals
         get("/hospitals/:hospital_name/payments", "application/json", (req, res)->{//can we change this to hospital name?
-            String hospitalname = req.params(":hospital_id");
+            String hospitalname = req.params(":hospital_name");
             List<Payment> allPaymentsByHospital;
             if (hospital == null){
-                throw new ApiException(404, String.format("No hospital with the id: \"%s\" exists", req.params("name")));
+                throw new ApiException(404, String.format("No hospital with the name: \"%s\" exists", req.params("name")));
             }
             //add method
             /*return gson.toJson(allPaymentsByHospital);*/
@@ -337,6 +337,13 @@ public class App {
         });
 
         //e). get by name
+        get("/payments/:payment_name", "application/json", (req, res)->{
+            String paymentName = req.params("payment_name");
+            if (payment.findByName(paymentName) == null){
+                throw new ApiException(404, String.format("No payment with the name: \"%s\" exists", req.params("name")));
+            }
+            return gson.toJson(location.findByName(paymentName));
+        });
 
         //Update
 
