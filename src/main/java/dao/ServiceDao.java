@@ -25,6 +25,6 @@ public interface ServiceDao {
 
 
     //Delete
-    void deleteById(int id);
+    Object deleteById(int id);
     void clearAll();
 }

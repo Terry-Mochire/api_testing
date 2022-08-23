@@ -22,7 +22,6 @@ public class App {
 
         //1.DOCTOR
         //Create
-
         //a). new
         post("locations/:location_Id/doctors/new", "application/json", (req, res)->{
             int locationId = Integer.parseInt(req.params("location_Id"));
@@ -98,13 +97,14 @@ public class App {
             allDoctorsByLocation = doctor.getAllDoctorsByLocation(locationId);
             return gson.toJson(allDoctorsByLocation);
         });
+
         //g). get by name
         get("/doctors/:doc_name", "application/json", (req, res)->{
-            int doctorId = Integer.parseInt(req.params("doc_name"));
-            if (doctor.findbyDoctorId(doctorId) == null){
+            String docName = req.params("doc_name");
+            if (doctor.findbyDoctorName(docName) == null){
                 throw new ApiException(404, String.format("No doctor with the name: \"%s\" exists", req.params("name")));
             }
-            return gson.toJson(doctor.findbyDoctorId(doctorId));
+            return gson.toJson(doctor.findbyDoctorName(docName));
         });
 
         //Update
@@ -149,6 +149,15 @@ public class App {
         });
 
         //c). get hospitals by services
+        get("/services/:service_name/hospitals", "application/json", (req, res)->{
+            String serviceName = req.params(":service_name");
+            List<Hospital> allHospitalsByServices;
+            if (service == null){
+                throw new ApiException(404, String.format("No service with the id: \"%s\" exists", req.params("name")));
+            }
+            allHospitalsByServices = hospital.findAllHospitalsWithServiceName(serviceName);
+            return gson.toJson(allHospitalsByServices);
+        });
 
         //d). get hospitals by doctors
         get("/doctors/:doc_name/hospitals", "application/json", (req, res)->{
@@ -163,8 +172,35 @@ public class App {
         });
 
         //e). get hospitals by specialities
+        get("/specialities/:specialty_name/hospitals", "application/json", (req, res)->{
+            String specialtyName = req.params(":specialty_name");
+            List<Hospital> allHospitalsBySpecialities;
+            if (service == null){
+                throw new ApiException(404, String.format("No service with the id: \"%s\" exists", req.params("name")));
+            }
+            allHospitalsBySpecialities = hospital.findAllHospitalsWithSpecialtyName(specialtyName);
+            return gson.toJson(allHospitalsBySpecialities);
+        });
+
         //f). get hospitals by location
+        get("/locations/:location_name/hospitals", "application/json", (req, res)->{
+            String location_name = req.params(":location_name");
+            List<Hospital> allHospitalsByLocation;
+            if (location == null){
+                throw new ApiException(404, String.format("No location with the id: \"%s\" exists", req.params("name")));
+            }
+            allHospitalsByLocation = hospital.findHospitalsByLocationName(location_name);
+            return gson.toJson(allHospitalsByLocation);
+        });
+
         //g). get hospitals by name
+        get("/hospitals/:hospital_name", "application/json", (req, res)->{
+            String hospitalName = req.params("hospital_name");
+            if (hospital.findHospitalsByHospitalName(hospitalName) == null){
+                throw new ApiException(404, String.format("No doctor with the name: \"%s\" exists", req.params("name")));
+            }
+            return gson.toJson(hospital.findHospitalsByHospitalName(hospitalName));
+        });
 
         //Update
 
@@ -172,7 +208,7 @@ public class App {
         delete("/hospitals/:hospital_Id/delete", "application/json", (req, res) -> {
             int hospitalId = Integer.parseInt(req.params("hospital_Id"));
             res.status(200);
-            return gson.toJson(hospital.findById(hospitalId));
+            return gson.toJson(hospital.deleteById(hospitalId));
         });
 
 
@@ -196,6 +232,12 @@ public class App {
         //Update
 
         //Delete
+        delete("/locations/:location_Id/delete", "application/json", (req, res) -> {
+            int locationId = Integer.parseInt(req.params("location_Id"));
+            res.status(200);
+            return gson.toJson(location.deleteById(locationId));
+        });
+
 
         //4.PAYMENT
         //Create
@@ -219,7 +261,7 @@ public class App {
         delete("/payments/:payment_Id/delete", "application/json", (req, res) -> {
             int paymentId = Integer.parseInt(req.params("payment_Id"));
             res.status(200);
-            return null;
+            return gson.toJson(payment.deleteById(paymentId));
         });
 
 
@@ -242,10 +284,10 @@ public class App {
         //update
 
         //Delete
-        delete("/services/:payment_Id/delete", "application/json", (req, res) -> {
+        delete("/services/:service_Id/delete", "application/json", (req, res) -> {
             int serviceId = Integer.parseInt(req.params("service_Id"));
             res.status(200);
-            return null;
+            return gson.toJson(service.deleteById(serviceId));
         });
 
 
@@ -272,7 +314,7 @@ public class App {
         delete("/specialities/:payment_Id/delete", "application/json", (req, res) -> {
             int specialityId = Integer.parseInt(req.params("speciality_Id"));
             res.status(200);
-            return null;
+            return null;//add sql delete method
         });
     }
 }

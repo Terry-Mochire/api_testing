@@ -135,7 +135,7 @@ public class Sql2oPaymentDao implements PaymentDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public Object deleteById(int id) {
         String sql = "DELETE FROM payments WHERE id = :id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
@@ -144,6 +144,7 @@ public class Sql2oPaymentDao implements PaymentDao {
         } catch (Exception e) {
             System.out.println(e + "Unable to delete payment from the database.");
         }
+        return "Payment Deleted";
     }
 
     @Override

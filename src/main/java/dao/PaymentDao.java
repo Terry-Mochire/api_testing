@@ -25,6 +25,6 @@ public interface PaymentDao {
     void update(int id, String name);
 
     //Delete
-    void deleteById(int id);
+    Object deleteById(int id);
     void clearAll();
 }
