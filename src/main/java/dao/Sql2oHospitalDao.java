@@ -204,7 +204,7 @@ public class Sql2oHospitalDao implements HospitalDao {
     }
 
     @Override
-    public void deleteById(int hospital_id) {
+    public Object deleteById(int hospital_id) {
         try (Connection con = sql2o.open()) {
             String SQL_DELETE_HOSPITAL = "DELETE FROM hospitals WHERE id = :id";
             con.createQuery(SQL_DELETE_HOSPITAL)
@@ -214,6 +214,7 @@ public class Sql2oHospitalDao implements HospitalDao {
             System.out.println(e + "Unable to delete hospital by id from the database.");
         }
 
+        return "Hospital Deleted";
     }
 
     @Override

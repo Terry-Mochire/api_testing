@@ -29,6 +29,6 @@ public interface HospitalDao {
 
 
     //Delete
-    void deleteById(int hospital_id);
+    Object deleteById(int hospital_id);
     void clearAll();
 }

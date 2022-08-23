@@ -161,7 +161,7 @@ public class Sql2oLocationDao implements LocationDao {
     }
 
     @Override
-    public void deleteById(int location_id) {
+    public Object deleteById(int location_id) {
         try (Connection con = sql2o.open()){
             con.createQuery("DELETE FROM locations WHERE id = :location_id")
                     .addParameter("location_id", location_id)
@@ -169,6 +169,7 @@ public class Sql2oLocationDao implements LocationDao {
         } catch (Exception e) {
             System.out.println("Unable to delete location from the database.");
         }
+        return "Location Deleted";
     }
 
     @Override

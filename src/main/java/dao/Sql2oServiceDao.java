@@ -137,7 +137,7 @@ public class Sql2oServiceDao implements ServiceDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public Object deleteById(int id) {
         try (Connection con = sql2o.open()){
             String SQL_DELETE_SERVICE_BY_ID = "DELETE FROM services WHERE id = :id";
             con.createQuery(SQL_DELETE_SERVICE_BY_ID)
@@ -146,6 +146,7 @@ public class Sql2oServiceDao implements ServiceDao {
         } catch (Sql2oException e){
             System.out.println( e + "Unable to delete by id");
         }
+        return "Service Deleted";
     }
 
     @Override
