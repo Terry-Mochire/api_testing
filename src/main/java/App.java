@@ -131,7 +131,7 @@ public class App {
         //Read
         //a). get all
         get("/hospitals", "application/json", (req, res)->{
-            if (doctor.getAll().size() > 0) {
+            if (hospital.getAll().size() > 0) {
                 return gson.toJson(doctor.getAll());
             }
             else {
@@ -145,7 +145,7 @@ public class App {
             if (hospital.findById(hospitalId) == null){
                 throw new ApiException(404, String.format("No hospital with the id: \"%s\" exists", req.params("id")));
             }
-            return gson.toJson(doctor.findbyDoctorId(hospitalId));
+            return gson.toJson(hospital.findById(hospitalId));
         });
 
         //c). get hospitals by services
@@ -213,7 +213,7 @@ public class App {
 
 
         //3.LOCATION
-        //create
+        //Create
         post("locations/new", "application/json", (req, res)->{
             Location newLocation = gson.fromJson(req.body(), Location.class);
             location.add(newLocation);
@@ -223,11 +223,54 @@ public class App {
 
         //Read
         //a). get all
-        //b). get by id
-        //c). get location by services
-        //d). get location by specialties
-        //e). get by name
+        get("/locations", "application/json", (req, res)->{
+            if (location.getAll().size() > 0) {
+                return gson.toJson(location.getAll());
+            }
+            else {
+                return "{\"message\":\"I'm sorry, but no locations are currently listed in the database.\"}";
+            }
+        });
 
+        //b). get by id
+        get("/locations/:location_Id", "application/json", (req, res)->{
+            int locationId = Integer.parseInt(req.params("hospital_Id"));
+            if (location.findById(locationId) == null){
+                throw new ApiException(404, String.format("No location with the id: \"%s\" exists", req.params("id")));
+            }
+            return gson.toJson(location.findById(locationId));
+        });
+
+        //c). get location by services
+        get("/services/:service_name/locations", "application/json", (req, res)->{
+            String serviceName = req.params(":service_name");
+            List<Location> allLocationsByServices;
+            if (service == null){
+                throw new ApiException(404, String.format("No service with the id: \"%s\" exists", req.params("name")));
+            }
+            allLocationsByServices = location.findAllLocationsWithServiceName(serviceName);
+            return gson.toJson(allLocationsByServices);
+        });
+
+        //d). get location by specialties
+        get("/specialities/:speciality_name/locations", "application/json", (req, res)->{
+            String specialityName = req.params(":specialty_name");
+            List<Location> allLocationsBySpecialties;
+            if (speciality == null){
+                throw new ApiException(404, String.format("No speciality with the name: \"%s\" exists", req.params("name")));
+            }
+            allLocationsBySpecialties = location.findAllLocationsWithSpecialtyName(specialityName);
+            return gson.toJson(allLocationsBySpecialties);
+        });
+
+        //e). get by name
+        get("/locations/:location_name", "application/json", (req, res)->{
+            String locationName = req.params("location_name");
+            if (location.findByName(locationName) == null){
+                throw new ApiException(404, String.format("No location with the name: \"%s\" exists", req.params("name")));
+            }
+            return gson.toJson(location.findByName(locationName));
+        });
 
         //Update
 
@@ -311,7 +354,7 @@ public class App {
         //Update
 
         //Delete
-        delete("/specialities/:payment_Id/delete", "application/json", (req, res) -> {
+        delete("/specialities/:speciality_Id/delete", "application/json", (req, res) -> {
             int specialityId = Integer.parseInt(req.params("speciality_Id"));
             res.status(200);
             return null;//add sql delete method
