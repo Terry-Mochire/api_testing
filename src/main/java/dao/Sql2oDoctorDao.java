@@ -98,9 +98,18 @@ public class Sql2oDoctorDao implements DoctorDao{
     }
 
     @Override
+    public Doctor findbyDoctorName(String name) {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM doctors WHERE doc_name = :name")
+                    .addParameter("name", name)
+                    .executeAndFetchFirst(Doctor.class);
+        }
+    }
+
+    @Override
     public List<Doctor> getAllDoctorsByHospital(int hospital_id) {
         try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM doctors WHERE hospital_id = :hospital_id")
+            return con.createQuery("SELECT * FROM doctors WHERE id = (SELECT doctor_id FROM hospitals.doctors WHERE hospital_id = :hospital_id);")
                     .addParameter("hospital_id", hospital_id)
                     .executeAndFetch(Doctor.class);
         }
@@ -125,9 +134,21 @@ public class Sql2oDoctorDao implements DoctorDao{
     }
 
     @Override
-    public List<Doctor> getAllDoctorsByPayment(int payment_id) {
+    public List<Doctor> getAllDoctorsByPaymentId(int payment_id) {
         try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM doctors WHERE payment_id = :payment_id")
+            return con.createQuery("SELECT FROM doctors WHERE id = (SELECT doctor_id FROM doctors.payments WHERE payment_id = :payment_id);")
+                    .addParameter("payment_id", payment_id)
+                    .executeAndFetch(Doctor.class);
+        }
+    }
+
+    @Override
+    public List<Doctor> findAllDoctorsByPaymentName(String paymentName) {
+        Payment payment = new Sql2oPaymentDao(sql2o).findByName(paymentName);
+        int payment_id = payment.getId();
+
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM doctors WHERE id = (SELECT doctor_id FROM doctors.payments WHERE payment_id = :payment_id);")
                     .addParameter("payment_id", payment_id)
                     .executeAndFetch(Doctor.class);
         }

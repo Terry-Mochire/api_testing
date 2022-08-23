@@ -10,6 +10,8 @@ public class Hospital {
     private double rating;
     private int location_id;
 
+    private int payment_id;
+
     public Hospital(int id, String name, String operatingHours, String email, String phoneNumber, double rating, int location_id) {
         this.id = id;
         this.name = name;
@@ -76,4 +78,11 @@ public class Hospital {
         this.location_id = location_id;
     }
 
+    public int getPayment_id() {
+        return payment_id;
+    }
+
+    public void setPayment_id(int payment_id) {
+        this.payment_id = payment_id;
+    }
 }
