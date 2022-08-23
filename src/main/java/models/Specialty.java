@@ -6,6 +6,12 @@ public class Specialty {
     private int id;
     private String name;
 
+    private int hospital_id;
+
+    private int location_id;
+
+    private int doctor_id;
+
     public Specialty(int id, String name) {
         this.id = id;
         this.name = name;
@@ -27,4 +33,27 @@ public class Specialty {
         this.name = name;
     }
 
+    public int getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(int location_id) {
+        this.location_id = location_id;
+    }
+
+    public int getHospital_id() {
+        return hospital_id;
+    }
+
+    public void setHospital_id(int hospital_id) {
+        this.hospital_id = hospital_id;
+    }
+
+    public int getDoctor_id() {
+        return doctor_id;
+    }
+
+    public void setDoctor_id(int doctor_id) {
+        this.doctor_id = doctor_id;
+    }
 }
