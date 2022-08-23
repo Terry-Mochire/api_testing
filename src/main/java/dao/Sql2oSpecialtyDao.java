@@ -116,5 +116,42 @@ public class Sql2oSpecialtyDao implements SpecialtyDao {
                     .executeAndFetch(Doctor.class);
         }
     }
+
+    @Override
+    public void update(int specialty_id, String specialty_name) {
+        try (Connection con = sql2o.open()){
+            String SQL_UPDATE_SERVICE = "UPDATE specialties SET name = :specialty_name WHERE id = :specialty_id";
+            con.createQuery(SQL_UPDATE_SERVICE)
+                    .addParameter("specialty_name", specialty_name)
+                    .addParameter("specialty_id", specialty_id)
+                    .executeUpdate();
+        } catch (Sql2oException e){
+            System.out.println( e + "unable to update specialties table");
+        }
+
+    }
+
+    @Override
+    public void deleteByid(int specialty_id) {
+        try(Connection con = sql2o.open()){
+            con.createQuery("DELETE FROM specialties WHERE id = :specialty_id")
+                    .addParameter("specialty_id", specialty_id)
+                    .executeUpdate();
+        } catch (Exception e){
+            System.out.println(e + "Unable to delete specialty by id");
+        }
+
+    }
+
+    @Override
+    public void clearAll() {
+        try(Connection con = sql2o.open()) {
+            con.createQuery("DELETE FROM specialties;")
+                    .executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e + "Unable to delete all specialties");
+        }
+    }
 }
 

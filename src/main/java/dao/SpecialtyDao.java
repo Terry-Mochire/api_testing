@@ -24,6 +24,10 @@ public interface SpecialtyDao {
 
 
     //Update
+    void update(int specialty_id, String specialty_name );
 
     //Delete
+
+    void deleteByid(int specialty_id);
+    void clearAll();
 }
