@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import dao.*;
 import exceptions.ApiException;
 import models.*;
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.util.List;
@@ -11,18 +12,20 @@ import static spark.Spark.*;
 public class App {
     public static void main(String[] args) {
         Gson gson = new Gson();
-        String connectionString = "";
-        Sql2o sql2o = new Sql2o(connectionString, null, null);
+        String connectionString = "jdbc:postgresql://localhost:5432/mpate_daktari";
+        Sql2o sql2o = new Sql2o(connectionString, "terry", "Postgres4041*");
         Sql2oDoctorDao doctor = new Sql2oDoctorDao(sql2o);
         Sql2oHospitalDao hospital = new Sql2oHospitalDao(sql2o);
         Sql2oLocationDao location = new Sql2oLocationDao(sql2o);
         Sql2oPaymentDao payment = new Sql2oPaymentDao(sql2o);
         Sql2oServiceDao service = new Sql2oServiceDao(sql2o);
         Sql2oSpecialtyDao speciality = new Sql2oSpecialtyDao(sql2o);
+        Connection conn = sql2o.open();
 
         //1.DOCTOR
         //Create
         //a). new
+        //Do we need such a location to be set before adding a doctor?
         post("locations/:location_Id/doctors/new", "application/json", (req, res)->{
             int locationId = Integer.parseInt(req.params("location_Id"));
             Doctor newDoctor = gson.fromJson(req.body(), Doctor.class);
@@ -35,18 +38,19 @@ public class App {
         //b). add to hospital
 
         //Read
-        //a). get all
+        //a). get all doctors
         get("/doctors", "application/json", (req, res)->{
             if (doctor.getAll().size() > 0) {
-                return gson.toJson(doctor.getAll());
+                List<Doctor> doctors = doctor.getAll();
+                return gson.toJson(doctors);
             }
             else {
                 return "{\"message\":\"I'm sorry, but no doctors are currently listed in the database.\"}";
             }
         });
 
-        //b). get by id
-        get("/doctors/:doctor_Id", "application/json", (req, res)->{
+        //b). get doctor by id
+        get("/doctors/id/:doctor_Id", "application/json", (req, res)->{
             int doctorId = Integer.parseInt(req.params("doctor_Id"));
             if (doctor.findbyDoctorId(doctorId) == null){
                 throw new ApiException(404, String.format("No doctor with the id: \"%s\" exists", req.params("id")));
@@ -66,26 +70,26 @@ public class App {
         });
 
         //d). get doctors by hospitals
-        get("/hospitals/:hospital_id/doctors", "application/json", (req, res)->{//can we change this to hospital name?
-            int hospitalId = Integer.parseInt(req.params(":hospital_id"));
-            List<Doctor> allDoctorsByHospital;
-            if (hospital == null){
-                throw new ApiException(404, String.format("No hospital with the id: \"%s\" exists", req.params("id")));
-            }
-            allDoctorsByHospital = doctor.getAllDoctorsByHospital(hospitalId);
-            return gson.toJson(allDoctorsByHospital);
-        });
+//        get("/hospitals/:hospital_id/doctors", "application/json", (req, res)->{//can we change this to hospital name?
+//            int hospitalId = Integer.parseInt(req.params(":hospital_id"));
+//            List<Doctor> allDoctorsByHospital;
+//            if (hospital == null){
+//                throw new ApiException(404, String.format("No hospital with the id: \"%s\" exists", req.params("id")));
+//            }
+//            allDoctorsByHospital = doctor.getAllDoctorsByHospital(hospitalId);
+//            return gson.toJson(allDoctorsByHospital);
+//        });
 
         //e). get doctors by payment methods
-        get("/payments/:payment_id/doctors", "application/json", (req, res)->{
-            int paymentId = Integer.parseInt(req.params(":payment_id"));
-            List<Doctor> allDoctorsByPayment;
-            if (payment == null){
-                throw new ApiException(404, String.format("No payment with the id: \"%s\" exists", req.params("id")));
-            }
-            allDoctorsByPayment = doctor.getAllDoctorsByPaymentId(paymentId);
-            return gson.toJson(allDoctorsByPayment);
-        });
+//        get("/payments/:payment_id/doctors", "application/json", (req, res)->{
+//            int paymentId = Integer.parseInt(req.params(":payment_id"));
+//            List<Doctor> allDoctorsByPayment;
+//            if (payment == null){
+//                throw new ApiException(404, String.format("No payment with the id: \"%s\" exists", req.params("id")));
+//            }
+//            allDoctorsByPayment = doctor.getAllDoctorsByPaymentId(paymentId);
+//            return gson.toJson(allDoctorsByPayment);
+//        });
 
         //f). get doctors by location
         get("/locations/:location_id/doctors", "application/json", (req, res)->{
@@ -99,12 +103,13 @@ public class App {
         });
 
         //g). get by name
-        get("/doctors/:doc_name", "application/json", (req, res)->{
+        get("/doctors/names/:doc_name", "application/json", (req, res)->{
             String docName = req.params("doc_name");
-            if (doctor.findbyDoctorName(docName) == null){
+            Doctor doctor1 = doctor.findbyDoctorName(docName);
+            if (doctor1 == null){
                 throw new ApiException(404, String.format("No doctor with the name: \"%s\" exists", req.params("name")));
             }
-            return gson.toJson(doctor.findbyDoctorName(docName));
+            return gson.toJson(doctor1);
         });
 
         //Update
@@ -132,7 +137,7 @@ public class App {
         //a). get all
         get("/hospitals", "application/json", (req, res)->{
             if (hospital.getAll().size() > 0) {
-                return gson.toJson(doctor.getAll());
+                return gson.toJson(hospital.getAll());
             }
             else {
                 return "{\"message\":\"I'm sorry, but no hospitals are currently listed in the database.\"}";
@@ -140,7 +145,7 @@ public class App {
         });
 
         //b). get by id
-        get("/hospitals/:hospital_Id", "application/json", (req, res)->{
+        get("/hospitals/id/:hospital_Id", "application/json", (req, res)->{
             int hospitalId = Integer.parseInt(req.params("hospital_Id"));
             if (hospital.findById(hospitalId) == null){
                 throw new ApiException(404, String.format("No hospital with the id: \"%s\" exists", req.params("id")));
@@ -160,16 +165,14 @@ public class App {
         });
 
         //d). get hospitals by doctors
-        get("/doctors/:doc_name/hospitals", "application/json", (req, res)->{
-            String docName = req.params(":doc_name");
-            List<Hospital> allHospitalsByDoctors;
-            if (doctor == null){
-                throw new ApiException(404, String.format("No doctor with the name: \"%s\" exists", req.params("name")));
-            }
-            //add method
-            /*return gson.toJson(allHospitalsByDoctors);*/
-            return null;
-        });
+//        get("/doctors/:doc_name/hospitals", "application/json", (req, res)->{
+//            String docName = req.params(":doc_name");
+//            List<Hospital> allHospitalsByDoctors = doctor.;
+//            if (doctor == null){
+//                throw new ApiException(404, String.format("No doctor with the name: \"%s\" exists", req.params("name")));
+//            }
+//            return ;
+//        });
 
         //e). get hospitals by specialities
         get("/specialities/:specialty_name/hospitals", "application/json", (req, res)->{
@@ -241,6 +244,7 @@ public class App {
             return gson.toJson(location.findById(locationId));
         });
 
+
         //c). get location by services
         get("/services/:service_name/locations", "application/json", (req, res)->{
             String serviceName = req.params(":service_name");
@@ -253,18 +257,15 @@ public class App {
         });
 
         //d). get location by specialties
-        get("/specialities/:speciality_name/locations", "application/json", (req, res)->{
-            String specialityName = req.params(":specialty_name");
+        get("/specialities/:specialty_name/locations", "application/json", (req, res)->{
+            String speciality_name = req.params("specialty_name");
             List<Location> allLocationsBySpecialties;
-            if (speciality == null){
-                throw new ApiException(404, String.format("No speciality with the name: \"%s\" exists", req.params("name")));
-            }
-            allLocationsBySpecialties = location.findAllLocationsWithSpecialtyName(specialityName);
+            allLocationsBySpecialties = location.findAllLocationsWithSpecialtyName(speciality_name);
             return gson.toJson(allLocationsBySpecialties);
         });
 
         //e). get by name
-        get("/locations/:location_name", "application/json", (req, res)->{
+        get("/locations/names/:location_name", "application/json", (req, res)->{
             String locationName = req.params("location_name");
             if (location.findByName(locationName) == null){
                 throw new ApiException(404, String.format("No location with the name: \"%s\" exists", req.params("name")));

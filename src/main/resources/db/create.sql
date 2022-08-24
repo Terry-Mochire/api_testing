@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS "specialties" (
 
 CREATE TABLE IF NOT EXISTS "doctors" (
   "id" serial PRIMARY KEY,
-  "doc_name" varchar,
-  "location_id" int,
-  "specialty_id" int,
+  "doc_name" varchar NOT NULL,
+  "location_id" int NOT NULL,
+  "specialty_id" int NOT NULL,
   "qualification" varchar,
   "consultation_fee" int,
   "email" varchar,
@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS "doctors" (
 
 CREATE TABLE IF NOT EXISTS "hospitals" (
   "id" serial PRIMARY KEY,
-  "name" varchar,
+  "name" varchar NOT NULL,
   "operating_hours" varchar,
-  "location_id" int,
+  "location_id" int NOT NULL,
   "email" varchar,
   "phone_number" varchar,
   "rating" real

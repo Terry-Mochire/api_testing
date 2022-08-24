@@ -3,24 +3,24 @@ package models;
 public class Doctor {
 
     private int id;
-    private String name;
+    private String doc_name;
     private String qualification;
     private String email;
-    private String phoneNumber;
-    private int consultationFee;
+    private String phone_number;
+    private int consultation_fee;
     private double rating;
     private int location_id;
     private int specialty_id;
     private int hospital_id;
     private int payment_id;
 
-    public Doctor(int id, String name, String qualification, String email, String phoneNumber, int consultationFee, double rating, int location_id, int specialty_id) {
+    public Doctor(int id, String doc_name, String qualification, String email, String phone_number, int consultation_fee, double rating, int location_id, int specialty_id) {
         this.id = id;
-        this.name = name;
+        this.doc_name = doc_name;
         this.qualification = qualification;
         this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.consultationFee = consultationFee;
+        this.phone_number = phone_number;
+        this.consultation_fee = consultation_fee;
         this.rating = rating;
         this.location_id = location_id;
         this.specialty_id = specialty_id;
@@ -35,11 +35,11 @@ public class Doctor {
     }
 
     public String getName() {
-        return name;
+        return doc_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String doc_name) {
+        this.doc_name = doc_name;
     }
 
     public String getQualification() {
@@ -59,19 +59,19 @@ public class Doctor {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return phone_number;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhoneNumber(String phone_number) {
+        this.phone_number = phone_number;
     }
 
     public int getConsultationFee() {
-        return consultationFee;
+        return consultation_fee;
     }
 
-    public void setConsultationFee(int consultationFee) {
-        this.consultationFee = consultationFee;
+    public void setConsultationFee(int consultation_fee) {
+        this.consultation_fee = consultation_fee;
     }
 
     public double getRating() {

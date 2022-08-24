@@ -18,8 +18,14 @@ public class Sql2oHospitalDao implements HospitalDao {
     @Override
     public void add(Hospital hospital) {
         try(Connection con = sql2o.open()) {
-            String SQL_INSERT_HOSPITAL = "INSERT INTO hospitals (name, operating_hours, email, phone_number, rating, location_id) VALUES (:name, :operating_hours, :email, :phone_number, :rating, :location_id)";
+            String SQL_INSERT_HOSPITAL = "INSERT INTO hospitals (name, operating_hours, location_id, email, phone_number, rating) VALUES (:name, :operating_hours, :location_id, :email, :phone_number, :rating)";
             int id = (int) con.createQuery(SQL_INSERT_HOSPITAL, true)
+                    .addParameter("name", hospital.getName())
+                    .addParameter("operating_hours", hospital.getOperatingHours())
+                    .addParameter("email", hospital.getEmail())
+                    .addParameter("phone_number", hospital.getPhone_number())
+                    .addParameter("rating", hospital.getRating())
+                    .addParameter("location_id", hospital.getLocation_id())
                     .bind(hospital)
                     .executeUpdate()
                     .getKey();

@@ -4,20 +4,20 @@ public class Hospital {
 
     private int id;
     private String name;
-    private String operatingHours;
+    private String operating_hours;
     private String email;
-    private String phoneNumber;
+    private String phone_number;
     private double rating;
     private int location_id;
 
     private int payment_id;
 
-    public Hospital(int id, String name, String operatingHours, String email, String phoneNumber, double rating, int location_id) {
+    public Hospital(int id, String name, String operating_hours, String email, String phone_number, double rating, int location_id) {
         this.id = id;
         this.name = name;
-        this.operatingHours = operatingHours;
+        this.operating_hours = operating_hours;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phone_number = phone_number;
         this.rating = rating;
         this.location_id = location_id;
     }
@@ -39,11 +39,11 @@ public class Hospital {
     }
 
     public String getOperatingHours() {
-        return operatingHours;
+        return operating_hours;
     }
 
-    public void setOperatingHours(String operatingHours) {
-        this.operatingHours = operatingHours;
+    public void setOperatingHours(String operating_hours) {
+        this.operating_hours = operating_hours;
     }
 
     public String getEmail() {
@@ -54,12 +54,12 @@ public class Hospital {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhoneNumber(String phone_number) {
+        this.phone_number = phone_number;
     }
 
     public double getRating() {

@@ -6,6 +6,7 @@ import models.Service;
 import models.Specialty;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 
 import java.util.List;
 
@@ -71,13 +72,13 @@ public class Sql2oLocationDao implements LocationDao {
             int specialty_id = specialty.getId(); // get the specialty_id from the specialty object
 
             try (Connection con = sql2o.open()) {
-                return con.createQuery("SELECT * FROM locations WHERE id IN (SELECT location_id FROM locations.specialty WHERE specialty_id = :specialty_id)")
+                return con.createQuery("SELECT * FROM locations WHERE id = (SELECT location_id FROM locations.specialty WHERE specialty_id = :specialty_id)")
                         .addParameter("specialty_id", specialty_id)
                         .executeAndFetch(Location.class);
             }
 
-        } catch (Exception e) {
-            System.out.println("Unable to get location from the database.");
+        } catch (Sql2oException e) {
+            System.out.println( e + " Unable to get location from the database.");
             return null;
         }
 

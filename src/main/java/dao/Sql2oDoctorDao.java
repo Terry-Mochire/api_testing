@@ -83,7 +83,7 @@ public class Sql2oDoctorDao implements DoctorDao{
     @Override
     public List<Doctor> getAll() {
         try (Connection con = sql2o.open()) {
-            return con.createQuery("SELECT * FROM doctors")
+            return con.createQuery("SELECT * FROM doctors;")
                     .executeAndFetch(Doctor.class);
         }
     }
